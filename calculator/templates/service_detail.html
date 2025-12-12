@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ isotope.name }} - Детали{% endblock %}
+
+{% block content %}
+<div class="service-detail">
+    <img src="{{ isotope.image_url }}" alt="{{ isotope.name }}">
+    <div class="service-info">
+        <h2>{{ isotope.name }}</h2>
+        <p><strong>Период полураспада:</strong> {{ isotope.half_life }} лет</p>
+        <p><strong>Атомная масса:</strong> {{ isotope.atomic_mass }}</p>
+        <p><strong>Тип распада:</strong> {{ isotope.decay_type }}</p>
+        <p><strong>Применение:</strong> {{ isotope.application }}</p>
+        <p><strong>Описание:</strong> {{ isotope.description }}</p>
+    </div>
+</div>
+{% endblock %}

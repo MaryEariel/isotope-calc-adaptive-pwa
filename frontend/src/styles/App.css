@@ -1,0 +1,27 @@
+/* src/styles/App.css */
+/* Кастомизация Bootstrap */
+
+:root {
+  --primary-color: #0B2149;
+  --secondary-color: #14BF96;
+  --background-color: #f4f4f4;
+}
+
+body {
+  background-color: var(--background-color);
+}
+
+/* Кастомизация Navbar */
+.bg-custom-header {
+  background-color: var(--primary-color) !important;
+}
+
+/* Кастомизация карточек */
+.service-card-custom {
+  transition: transform 0.2s ease-in-out;
+}
+
+.service-card-custom:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}

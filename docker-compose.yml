@@ -1,0 +1,78 @@
+services:
+  postgres:
+    image: postgres:15.0
+    container_name: isotope_postgres
+    environment:
+      POSTGRES_DB: "isotope_db"
+      POSTGRES_USER: "isotope_user"
+      POSTGRES_PASSWORD: "isotope_pass"
+      PGDATA: "/var/lib/postgresql/data/pgdata"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U isotope_user -d isotope_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    container_name: isotope_redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+
+  minio:
+    image: minio/minio
+    container_name: isotope_minio
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    volumes:
+      - minio_data:/data
+    command: server --console-address ":9001" /data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+
+  web:
+    image: python:3.11
+    container_name: isotope_web
+    working_dir: /app
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
+      minio:
+        condition: service_healthy
+    environment:
+      - DEBUG=1
+    # Ждём пока БД запустится, затем выполняем миграции и запускаем сервер
+    command: >
+      sh -c "sleep 10 &&
+             pip install -r requirements.txt &&
+             python manage.py migrate &&
+             python manage.py runserver 0.0.0.0:8000"
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  redis_data:
+  minio_data:

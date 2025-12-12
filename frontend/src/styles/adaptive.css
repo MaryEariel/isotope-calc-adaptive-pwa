@@ -1,0 +1,352 @@
+/* frontend/src/styles/adaptive.css */
+
+/* ==================== АДАПТИВНОСТЬ КАРТОЧЕК ==================== */
+
+/* Десктоп (1200px и больше) - 3 колонки */
+.services-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    margin: 40px auto;
+    max-width: 1200px;
+    padding: 0 20px;
+}
+
+/* Планшеты горизонтальные (992px - 1199px) - 3 колонки */
+@media (max-width: 1199px) {
+    .services-container {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 25px;
+        padding: 0 15px;
+    }
+}
+
+/* Планшеты вертикальные (768px - 991px) - 2 колонки */
+@media (max-width: 991px) {
+    .services-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 25px;
+        padding: 0 15px;
+    }
+}
+
+/* Мобильные телефоны (576px - 767px) - 2 колонки */
+@media (max-width: 767px) {
+    .services-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+        padding: 0 10px;
+    }
+    
+    .service-card {
+        min-height: 450px;
+        padding: 15px;
+        padding-bottom: 75px;
+    }
+    
+    .service-card img {
+        height: 180px;
+    }
+}
+
+/* Маленькие телефоны (до 575px) - 1 колонка */
+@media (max-width: 575px) {
+    .services-container {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        padding: 0 10px;
+    }
+    
+    .service-card {
+        min-height: 420px;
+        padding: 12px;
+        padding-bottom: 70px;
+    }
+    
+    .service-card h3 {
+        font-size: 18px;
+    }
+}
+
+/* ==================== АДАПТИВНОСТЬ ПОИСКА ==================== */
+
+/* Базовый стиль для формы поиска */
+.search-form {
+    margin: 30px auto;
+    max-width: 600px;
+    padding: 0 20px;
+}
+
+.search-form form {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    align-items: center;
+}
+
+.search-form input {
+    padding: 12px 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    flex: 1;
+    min-width: 200px;
+}
+
+.search-form button {
+    padding: 12px 30px;
+    background-color: #14BF96;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    white-space: nowrap;
+}
+
+/* На мобильных - форма в столбик */
+@media (max-width: 767px) {
+    .search-form form {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+    }
+    
+    .search-form input {
+        width: 100%;
+        margin-bottom: 0;
+    }
+    
+    .search-form button {
+        width: 100%;
+    }
+}
+
+/* ==================== АДАПТИВНОСТЬ HEADER ==================== */
+
+/* На мобильных уменьшаем заголовок */
+@media (max-width: 767px) {
+    .header h1 {
+        font-size: 20px;
+        padding-right: 70px;
+        text-align: left;
+    }
+    
+    .home-link {
+        width: 60px;
+        height: 60px;
+        font-size: 24px;
+    }
+}
+
+/* Очень маленькие экраны */
+@media (max-width: 480px) {
+    .header h1 {
+        font-size: 18px;
+        padding-right: 60px;
+    }
+    
+    .home-link {
+        width: 50px;
+        height: 50px;
+        font-size: 20px;
+    }
+}
+
+/* ==================== АДАПТИВНОСТЬ ДЕТАЛЬНОЙ СТРАНИЦЫ ==================== */
+
+.service-detail {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+}
+
+@media (min-width: 768px) {
+    .service-detail {
+        flex-direction: row;
+        padding: 30px;
+        gap: 30px;
+    }
+}
+
+.service-detail img {
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto;
+}
+
+@media (min-width: 768px) {
+    .service-detail img {
+        width: 300px;
+        flex-shrink: 0;
+    }
+}
+
+/* ==================== АДАПТИВНОСТЬ КОРЗИНЫ ==================== */
+
+.cart-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+    padding: 0 20px;
+}
+
+.cart-icon {
+    width: 70px;
+    height: 70px;
+    font-size: 32px;
+}
+
+@media (max-width: 767px) {
+    .cart-container {
+        justify-content: center;
+        padding: 0;
+    }
+    
+    .cart-icon {
+        width: 60px;
+        height: 60px;
+        font-size: 28px;
+    }
+}
+
+/* ==================== АДАПТИВНОСТЬ NAVBAR ==================== */
+
+/* Скрываем бургер-меню на десктопе */
+.navbar-toggler {
+    display: none;
+}
+
+@media (max-width: 991px) {
+    .navbar-toggler {
+        display: block;
+    }
+    
+    .navbar-collapse {
+        background-color: #0B2149;
+        padding: 15px;
+        margin-top: 10px;
+        border-radius: 5px;
+    }
+}
+
+/* ==================== ОБЩИЕ АДАПТИВНЫЕ СТИЛИ ==================== */
+
+/* Отступы на мобильных */
+@media (max-width: 767px) {
+    body {
+        padding: 10px;
+    }
+    
+    .container {
+        padding: 0;
+    }
+}
+/* ==================== АДАПТИВНОСТЬ BREADCRUMBS ==================== */
+
+.breadcrumbs-container {
+    padding: 0 20px;
+    margin: 20px 0;
+}
+
+.breadcrumb-custom {
+    background-color: transparent;
+    padding: 0;
+    margin-bottom: 0;
+}
+
+.breadcrumb-custom .breadcrumb-item {
+    font-size: 14px;
+}
+
+.breadcrumb-custom .breadcrumb-item a {
+    color: #0B2149;
+    text-decoration: none;
+}
+
+.breadcrumb-custom .breadcrumb-item.active {
+    color: #666;
+}
+
+.breadcrumb-custom .breadcrumb-item + .breadcrumb-item::before {
+    content: "›";
+    color: #666;
+    padding: 0 8px;
+}
+
+/* На мобильных - уменьшаем размер и меняем разделитель */
+@media (max-width: 768px) {
+    .breadcrumbs-container {
+        padding: 0 15px;
+        margin: 15px 0;
+    }
+    
+    .breadcrumb-custom .breadcrumb-item {
+        font-size: 13px;
+    }
+    
+    .breadcrumb-custom .breadcrumb-item + .breadcrumb-item::before {
+        content: "›";
+        padding: 0 5px;
+        font-size: 12px;
+    }
+    
+    /* Скрываем текст "Главная", оставляем только иконку */
+    .breadcrumb-text {
+        display: inline-block;
+    }
+}
+
+/* На очень маленьких экранах - упрощаем */
+@media (max-width: 480px) {
+    .breadcrumbs-container {
+        padding: 0 10px;
+        margin: 10px 0;
+    }
+    
+    .breadcrumb-custom .breadcrumb-item {
+        font-size: 12px;
+    }
+    
+    .breadcrumb-custom .breadcrumb-item + .breadcrumb-item::before {
+        content: ">";
+        padding: 0 4px;
+        font-size: 11px;
+    }
+    
+    /* Скрываем длинные названия, показываем сокращённые */
+    .breadcrumb-text {
+        max-width: 80px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    
+    /* Прячем текст "Главная", оставляем только иконку дома */
+    .breadcrumb-item:first-child .breadcrumb-text {
+        display: none;
+    }
+    
+    .breadcrumb-item:first-child .fa-home {
+        margin-right: 0;
+    }
+}
+
+/* Альтернативный вариант для мобильных - горизонтальный скролл */
+@media (max-width: 360px) {
+    .breadcrumbs-container {
+        overflow-x: auto;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .breadcrumb-custom {
+        display: inline-flex;
+        flex-wrap: nowrap;
+    }
+    
+    .breadcrumb-custom .breadcrumb-item {
+        flex-shrink: 0;
+    }
+}

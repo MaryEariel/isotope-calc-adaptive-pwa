@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Расчет остаточной активности изотопов{% endblock %}
+
+{% block content %}
+<div class="order-page">
+    <h1>РАСЧЕТ ОСТАТОЧНОЙ АКТИВНОСТИ ИЗОТОПОВ</h1>
+    
+    {% if calculation.status == 'DRAFT' %}
+    <div style="text-align: right; margin-bottom: 20px;">
+        <!-- ИСПРАВЛЕНО: delete_calculation -> delete_isotope_calculation -->
+        <form method="post" action="{% url 'delete_isotope_calculation' calculation.id %}" style="display: inline;">
+            {% csrf_token %}
+            <button type="submit" style="
+                background: #ff4444; 
+                color: white; 
+                border: none; 
+                padding: 10px 20px; 
+                border-radius: 5px; 
+                cursor: pointer;">
+                Удалить заявку на расчет изотопов
+            </button>
+        </form>
+    </div>
+    {% endif %}
+    
+    <div class="order-configuration">
+        <h2>Параметры расчета активности изотопов</h2>
+        <form method="post" class="order-form">
+            {% csrf_token %}
+            <div class="params-grid">
+                <div class="param-group">
+                    <label for="time_elapsed">Время, прошедшее с начала (лет):</label>
+                    <input type="number" id="time_elapsed" name="time_elapsed" 
+                           value="{{ calculation.time_elapsed|default:'0' }}" step="any" min="0" required>
+                </div>
+                <div class="param-group">
+                    <button type="submit" class="calculate-btn">Рассчитать активность изотопов</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    
+    <div class="order-items-list">
+        <h2>Изотопы в заявке на расчет ({{ isotopes_in_calculations_count }})</h2>
+        <div class="items-container">
+            {% for isotope_item in isotope_items %} 
+            <div class="order-item-horizontal">
+                
+                <div class="item-main-info">
+                    <img src="{{ isotope_item.isotope.image_url }}" alt="{{ isotope_item.isotope.name }}">
+                    <div class="item-details">
+                        <p class="item-name">{{ isotope_item.isotope.name }}</p>
+                        <p class="item-half-life">Период полураспада: {{ isotope_item.isotope.half_life }} лет</p>
+                    </div>
+                </div>
+                
+                <div class="item-params">
+                    <!-- ИСПРАВЛЕНО: delete_calculation_item -> delete_isotope_calculation_item -->
+                    <form method="post" action="{% url 'delete_isotope_calculation_item' isotope_item.id %}" style="display: inline-flex; align-self: flex-start; margin-left: auto;">
+                        {% csrf_token %}
+                        <button type="submit" class="delete-item-btn" title="Удалить изотоп">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </form>
+                    
+                    <div class="param-input-group">
+                        <label for="initial_amount_{{ isotope_item.id }}">Начальная масса (г):</label>
+                        <input type="number" 
+                               name="initial_amount" 
+                               form="order-form" 
+                               value="{{ isotope_item.initial_amount|floatformat:2 }}" 
+                               step="any" 
+                               min="0.01" 
+                               required 
+                               style="width: 100px;">
+                        <input type="hidden" name="item_id" form="order-form" value="{{ isotope_item.id }}">
+                    </div>
+                </div>
+                
+                <div class="item-results">
+                    <div class="result-group">
+                        <span class="result-label">Остаточная активность:</span>
+                        <span class="result-value">
+                            {% if isotope_item.remaining_activity %}
+                                {{ isotope_item.remaining_activity|floatformat:2 }} Бк
+                            {% else %}
+                                -
+                            {% endif %}
+                        </span>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div style="text-align: center; padding: 40px;">
+                <p>В заявке на расчет изотопов нет изотопов для расчета</p>
+                <a href="{% url 'isotopes_list' %}" style="color: #14BF96;">Добавить изотопы</a>
+            </div>
+            {% endfor %}
+        </div>
+
+        {% if isotope_items %} 
+        <div class="total-result">
+            <div class="total-item">
+                <span class="total-label">Суммарная остаточная активность изотопов:</span>
+                <span class="total-value">
+                    {% if total_activity %}
+                        {{ total_activity|floatformat:2 }} Бк
+                    {% else %}
+                        -
+                    {% endif %}
+                </span>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Список радиоактивных изотопов{% endblock %}
+
+{% block content %}
+<div class="cart-container">
+    {% if current_calculation_id %}
+        <a href="{% url 'isotope_calculation_detail' calculation_id=current_calculation_id %}" class="cart-icon">
+            <i class="fas fa-calculator"></i>
+            {% if isotopes_in_calculations_count > 0 %}
+                <span class="cart-count">{{ isotopes_in_calculations_count }}</span>
+            {% endif %}
+        </a>
+    {% else %}
+        <a href="#" class="cart-icon inactive">
+            <i class="fas fa-calculator"></i>
+        </a>
+    {% endif %}
+</div>
+
+<div class="search-form">
+    <!-- ИЗМЕНИЛ name="search" -> name="isotope_search" -->
+    <form method="get" action="{% url 'isotopes_list' %}">
+        <input type="text" name="isotope_search" placeholder="Поиск радиоактивных изотопов..." value="{{ isotope_search_query|default:'' }}">
+        <button type="submit">Найти изотопы</button>
+    </form>
+</div>
+
+<div class="services-container">
+    {% for isotope in isotopes %}
+    <div class="service-card">
+        <img src="{{ isotope.image_url }}" alt="{{ isotope.name }}">
+        <h3>{{ isotope.name }}</h3>
+        <p class="half-life">Период полураспада: {{ isotope.half_life }} лет</p>
+        <p class="decay-type">Тип распада: {{ isotope.decay_type }}</p>
+        <p class="application">{{ isotope.application|truncatewords:5 }}</p>
+        
+        <div class="card-actions">
+            <a href="{% url 'isotope_detail' isotope_id=isotope.id %}" class="details-btn">Подробнее</a>
+            
+            <!-- ИСПРАВЛЕНО: add_to_calculation -> add_to_isotope_calculation -->
+            <form method="post" action="{% url 'add_to_isotope_calculation' isotope.id %}" class="add-to-calculation-form">
+                {% csrf_token %}
+                <button type="submit" class="add-to-calculation-btn">Добавить в расчет изотопов</button>
+            </form>
+        </div>
+    </div>
+    {% empty %}
+    <div style="text-align: center; padding: 40px;">
+        <p>Изотопы не найдены или отсутствуют.</p>
+        {% if search_query %}
+            <a href="{% url 'isotopes_list' %}" style="color: #14BF96;">Показать все изотопы</a>
+        {% endif %}
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
